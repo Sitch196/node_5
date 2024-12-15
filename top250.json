@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "The Shawshank Redemption (Updated)",
+    "rating": "9.5",
+    "year": 1994,
+    "budget": 25000000,
+    "gross": 28341469,
+    "poster": "https://example.com/shawshank.jpg",
+    "position": 1
+  },
+  {
+    "id": "2",
+    "title": "The Godfather",
+    "rating": "9.2",
+    "year": 1972,
+    "budget": 6000000,
+    "gross": 134966411,
+    "poster": "https://example.com/godfather.jpg",
+    "position": 2
+  },
+  {
+    "id": "4",
+    "title": "The Dark Knight",
+    "rating": "9.0",
+    "year": 2008,
+    "budget": 185000000,
+    "gross": 1004558444,
+    "poster": "https://example.com/darkknight.jpg",
+    "position": 3
+  },
+  {
+    "id": "3",
+    "title": "Inception",
+    "rating": "8.8",
+    "year": 2010,
+    "budget": 160000000,
+    "gross": 836800000,
+    "poster": "https://example.com/inception.jpg",
+    "position": 4
+  }
+]
