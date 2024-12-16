@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "email": "ClarkKent@dev.com",
+    "password": "$2a$10$QLanyjt72yKjg0otA99yA.I7wIGAd1bAt3M68tDm606tXvr4fS.Tu",
+    "super": false
+  },
+  {
+    "id": 2,
+    "email": "BruceWayne@dev.com",
+    "password": "$2a$10$kYpSmG98Nge2dgdkwTD6iOnoIqMeTQGJPn5kzze5z7gMeVJ0g27/W",
+    "super": false
+  },
+  {
+    "id": 3,
+    "email": "BarryAllen@dev.com",
+    "password": "$2a$10$S/E1nYzuTkjs5lySxXBeE.jrk4FK3shENmyJOZejyE6KK8846o.sS",
+    "super": true
+  }
+]
