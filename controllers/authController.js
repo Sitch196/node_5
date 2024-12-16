@@ -1,6 +1,8 @@
+require("dotenv").config();
 const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const MANAGERS_PATH = path.join(__dirname, "../managers.json");
 
@@ -57,6 +59,53 @@ async function registerManager(req, res) {
   }
 }
 
+async function loginManager(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const managers = await readManagersFile();
+
+    const manager = managers.find((m) => m.email === email);
+
+    if (!manager) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, manager.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      {
+        id: manager.id,
+        email: manager.email,
+        super: manager.super,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "5m" }
+    );
+
+    res.json({
+      token,
+      message: "Login successful",
+      user: {
+        id: manager.id,
+        email: manager.email,
+        super: manager.super,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 module.exports = {
   registerManager,
+  loginManager,
 };
