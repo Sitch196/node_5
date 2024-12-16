@@ -2,6 +2,11 @@ const getFilmsData = require("../utils/getFilmsData");
 const saveFilmData = require("../utils/saveFilmData");
 
 const updateFilm = (req, res) => {
+  if (!req.user.super) {
+    return res
+      .status(403)
+      .json({ error: "Unauthorized. Superuser access required." });
+  }
   try {
     const films = getFilmsData();
     const { id } = req.body;

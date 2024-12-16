@@ -8,10 +8,13 @@ const validateFilmData = require("./middleware/validateFilmData");
 const {
   registerManager,
   loginManager,
+  authMiddleware,
 } = require("./controllers/authController");
 
 const app = express();
 app.use(express.json());
+
+app.use(authMiddleware);
 
 app.get("/api/films/readall", readAllFilms);
 app.get("/api/films/read", readFilmById);
