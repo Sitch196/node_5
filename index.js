@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const readAllFilms = require("./controllers/readAllFilms");
 const readFilmById = require("./controllers/readFilmById");
@@ -5,10 +6,10 @@ const createFilm = require("./controllers/createFilm");
 const updateFilm = require("./controllers/updateFilm");
 const deletedFilm = require("./controllers/deleteFilm");
 const validateFilmData = require("./middleware/validateFilmData");
+const { authMiddleware } = require("./middleware/authMiddleware");
 const {
   registerManager,
   loginManager,
-  authMiddleware,
 } = require("./controllers/authController");
 
 const app = express();
@@ -24,6 +25,6 @@ app.delete("/api/films/delete", deletedFilm);
 app.post("/api/auth/register", registerManager);
 app.post("/api/auth/login", loginManager);
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });

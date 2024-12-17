@@ -1,4 +1,3 @@
-const fs = require("fs");
 const getFilmsData = require("../utils/getFilmsData");
 
 const readFilmById = (req, res) => {

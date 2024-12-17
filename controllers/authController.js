@@ -3,24 +3,8 @@ const fs = require("fs").promises;
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const MANAGERS_PATH = path.join(__dirname, "../managers.json");
-
-async function readManagersFile() {
-  try {
-    const data = await fs.readFile(MANAGERS_PATH, { encoding: "utf8" });
-    return JSON.parse(data);
-  } catch (err) {
-    if (err.code === "ENOENT") {
-      return [];
-    }
-    throw err;
-  }
-}
-
-async function writeManagersFile(managers) {
-  await fs.writeFile(MANAGERS_PATH, JSON.stringify(managers, null, 2));
-}
+const { readManagersFile } = require("../utils/readManagersFile");
+const { writeManagersFile } = require("../utils/writeManagersFile");
 
 async function registerManager(req, res) {
   try {
@@ -54,7 +38,6 @@ async function registerManager(req, res) {
       .status(201)
       .json({ status: "Success", message: "Manager Successfully Registered" });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -106,48 +89,7 @@ async function loginManager(req, res) {
   }
 }
 
-const authMiddleware = async (req, res, next) => {
-  if (req.path.startsWith("/api/auth/")) {
-    return next();
-  }
-
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    return res.status(401).json({ error: "Authorization header is missing" });
-  }
-
-  const parts = authHeader.split(" ");
-  if (parts.length !== 2 || parts[0] !== "Bearer") {
-    return res.status(401).json({ error: "Token must be in Bearer format" });
-  }
-
-  const token = parts[1];
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const managers = await readManagersFile();
-    const user = managers.find((m) => m.id === decoded.id);
-
-    if (!user) {
-      return res.status(403).json({ error: "User not found" });
-    }
-
-    const { password, ...userWithoutPassword } = user;
-    req.user = userWithoutPassword;
-
-    next();
-  } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return res.status(403).json({ error: "Token has expired" });
-    }
-    return res.status(403).json({ error: "Invalid token" });
-  }
-};
-
 module.exports = {
   registerManager,
   loginManager,
-  authMiddleware,
 };
